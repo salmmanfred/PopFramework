@@ -1,9 +1,6 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-var p = [
-  [10, 20, 10, 10, "blue", "self"],
-  [20, 50, 10, 10, "red", "solf"],
-];
+var p = [];
 function addObj(x, y, w, h, c, i) {
   p.push([x, y, w, h, c, i]);
 }
@@ -31,13 +28,39 @@ function changeVal(i, t, x, v) {
     p[i][x] = p[i][x] + v;
   }
   if (t == "-") {
-    p[i][x] = p[i][x] + v;
+    p[i][x] = p[i][x] - v;
+  }
+  if (t == "/") {
+    p[i][x] = p[i][x] / v;
+  }
+  if (t == "*") {
+    p[i][x] = p[i][x] * v;
   }
 }
-
+function changeValAll(n, t, x, v) {
+  for (i = 0; i < p.length; i++) {
+    if (p[i][5] == n) {
+      if (t == "+") {
+        p[i][x] = p[i][x] + v;
+      }
+      if (t == "-") {
+        p[i][x] = p[i][x] - v;
+      }
+      if (t == "/") {
+        p[i][x] = p[i][x] / v;
+      }
+      if (t == "*") {
+        p[i][x] = p[i][x] * v;
+      }
+    }
+  }
+}
+function clearScreen() {
+  ctx.clearRect(0, 0, hei, wid);
+}
 function render() {
   let i;
-  ctx.clearRect(0, 0, hei, wid);
+  //ctx.clearRect(0, 0, hei, wid);
   for (i = 0; i < p.length; i++) {
     ctx.fillStyle = p[i][4];
 
@@ -57,6 +80,21 @@ function collided(n, nn) {
     }
   }
   return col(is, iis);
+}
+function colGroup(x, z) {
+  let fs = 0;
+  for (i = 0; i < z.length; i++) {
+    //console.log(z);
+    if (col(x, z[i])) {
+      fs += 1;
+      console.log(fs);
+    }
+  }
+  if (fs >= 1) {
+    fs = 0;
+
+    return true;
+  }
 }
 
 function col(x, xx) {
@@ -85,4 +123,7 @@ function outofframe(n) {
     }
     break;
   }
+}
+function random(l, h) {
+  return Math.random(l, h);
 }
