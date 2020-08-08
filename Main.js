@@ -67,6 +67,9 @@ function render() {
     ctx.fillRect(p[i][0], p[i][1], p[i][2], p[i][3]);
   }
 }
+function GetColor(i) {
+  return p[i][4];
+}
 
 function collided(n, nn) {
   let is;
@@ -126,4 +129,7 @@ function outofframe(n) {
 }
 function random(l, h) {
   return Math.random(l, h);
+}
+function version() {
+  return "0.3";
 }
