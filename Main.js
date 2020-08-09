@@ -1,12 +1,13 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 var p = [];
+var LibButton = false;
 function addObj(x, y, w, h, c, i) {
   p.push([x, y, w, h, c, i]);
 }
 
 function removeObj(s) {
-  p.slice(s, 1);
+  p.splice(s, 1);
 }
 
 function getnum(n) {
@@ -19,9 +20,16 @@ function getnum(n) {
 var hei;
 var wid;
 
-function setup(h, w) {
+function setup(h, w, lib) {
   hei = h;
   wid = w;
+  if (lib[0].Lib == "button") {
+    if (checkbuttonlib() == "buttonlib") {
+      LibButton = true;
+    } else {
+      alert("missing button library");
+    }
+  }
 }
 function changeVal(i, t, x, v) {
   if (t == "+") {
@@ -35,6 +43,9 @@ function changeVal(i, t, x, v) {
   }
   if (t == "*") {
     p[i][x] = p[i][x] * v;
+  }
+  if (t == "=") {
+    p[i][x] = v;
   }
 }
 function changeValAll(n, t, x, v) {
@@ -52,6 +63,9 @@ function changeValAll(n, t, x, v) {
       if (t == "*") {
         p[i][x] = p[i][x] * v;
       }
+      if (t == "=") {
+        p[i][x] = v;
+      }
     }
   }
 }
@@ -65,6 +79,28 @@ function render() {
     ctx.fillStyle = p[i][4];
 
     ctx.fillRect(p[i][0], p[i][1], p[i][2], p[i][3]);
+  }
+  if (LibButton) {
+    let b = getb();
+    let s = 0;
+    //console.log(b);
+    for (s = 0; s < b.length; s++) {
+      ctx.fillRect(b[s].x, b[s].y, b[s].w, b[s].h);
+      ctx.fillStyle = b[s].c;
+
+      //console.log("wd");
+    }
+    for (j = 0; j < b.length; j++) {
+      //"30px Arial";
+      ctx.textAlign = "center";
+      ctx.font = b[j].ts + " " + b[j].tt;
+
+      let fssd = b[j].x + b[j].w / 2;
+      let fsd = b[j].y + b[j].h / 2;
+
+      ctx.fillText(b[j].t, fssd, fsd);
+      ctx.fillStyle = b[j].tc;
+    }
   }
 }
 function GetColor(i) {
@@ -127,9 +163,26 @@ function outofframe(n) {
     break;
   }
 }
-function random(l, h) {
-  return Math.random(l, h);
-}
+
 function version() {
   return "0.3";
 }
+function purgeList(l) {
+  let ll = l.length;
+  for (i = 0; i < ll; i++) {
+    l.splice(0, 1);
+    console.log(l);
+  }
+}
+
+/*
+MATH AREA
+*/
+var PI = Math.pi;
+
+function random(l, h) {
+  return Math.random(l, h);
+}
+/*
+MATH AREA END
+*/
